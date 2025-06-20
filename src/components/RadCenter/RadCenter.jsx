@@ -1,7 +1,7 @@
 import CustomCalendar from "../../ui/CustomCalendar";
 import Patientlist from "./Patientlist";
 import PatientDetails from "./PatientDetails";
-import { useGetExaminations } from "../../hooks/usegetExaminations";
+import { useGetExaminations } from "../../hooks/useGetExaminations";
 import { useGetExaminationById } from "../../hooks/useGetExaminationById";
 import { useState } from "react";
 import { useGenerateReport } from "../../hooks/useGenerateReport";
