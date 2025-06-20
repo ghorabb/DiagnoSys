@@ -25,9 +25,8 @@ function PatientDetails({
     if (data.impression) formData.append("impression", data.impression);
 
     const findings = [data.finding1, data.finding2, data.finding3];
-    findings.forEach((f) => {
-      if (f) formData.append("findings", f);
-    });
+    findings.forEach((f) => formData.append("findings", f));
+    
 
     if (data.file?.[0]) formData.append("pdf", data.file[0]);
 

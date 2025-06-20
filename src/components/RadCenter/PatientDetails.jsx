@@ -162,7 +162,6 @@ function PatientDetails({
             )}
           </div>
 
-          {/* AI Report Generation */}
           <div className="p-6 bg-[#f2f3fd] rounded-lg text-center">
             <h3 className="font-semibold mb-2">Generate AI Report</h3>
             <MdAutoAwesome className="text-4xl text-gray-500 mx-auto mb-2" />
