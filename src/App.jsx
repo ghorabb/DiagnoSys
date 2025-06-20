@@ -4,7 +4,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 import Doctor from "./components/Doctor/Doctor";
@@ -18,6 +17,7 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import { CalendarProvider } from "./context/CalendarContext";
 import ForgetPassword from "./components/ForgetPassword/ForgetPassword";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import { HelmetProvider } from "react-helmet-async";
 
 const queryClient = new QueryClient();
 
@@ -74,31 +74,33 @@ function App() {
   return (
     <CalendarProvider>
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        <RouterProvider router={router} />
-        <Toaster
-          position="top-center"
-          gutter={12}
-          containerStyle={{ margin: "8px" }}
-          toastOptions={{
-            success: {
-              duration: 3000,
-            },
-            error: {
-              duration: 5000,
-            },
-            style: {
-              fontSize: "16px",
-              maxWidth: "500px",
-              padding: "16px 24px",
-              backgroundColor: "#fff",
-              color: "#374151",
-            },
-          }}
-        />
+        <HelmetProvider>
+          <RouterProvider router={router} />
+          <Toaster
+            position="top-center"
+            gutter={12}
+            containerStyle={{ margin: "8px" }}
+            toastOptions={{
+              success: {
+                duration: 3000,
+              },
+              error: {
+                duration: 5000,
+              },
+              style: {
+                fontSize: "16px",
+                maxWidth: "500px",
+                padding: "16px 24px",
+                backgroundColor: "#fff",
+                color: "#374151",
+              },
+            }}
+          />
+        </HelmetProvider>
       </QueryClientProvider>
     </CalendarProvider>
   );
 }
+
 
 export default App;
