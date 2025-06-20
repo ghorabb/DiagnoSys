@@ -159,7 +159,9 @@ function PatientDetailsForm({
         </div>
 
         <div>
-          <label className="block font-medium text-gray-600">Notes</label>
+          <label className="block font-medium text-gray-600">
+            Notes <span className="text-red-500">*</span>
+          </label>
           <textarea
             {...register("notes", { required: "Notes are required" })}
             className="w-full border p-3 rounded-md"

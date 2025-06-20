@@ -28,6 +28,7 @@ function PatientDetails({ selectedPatient, isLoading }) {
     labExaminationType,
     radExaminationType,
     examinationResponse,
+    doctorId,
   } = selectedPatient;
 
   const testType = labExaminationType || radExaminationType;
@@ -41,13 +42,25 @@ function PatientDetails({ selectedPatient, isLoading }) {
           <p className="font-bold">{patientId?.patientName}</p>
           <p className="text-sm text-gray-500">{patientId?.age} Years</p>
         </div>
+
         <div>
           <p className="text-sm text-gray-600">Gender: {patientId?.gender}</p>
           <p className="text-sm text-gray-600">Phone: {patientId?.phone}</p>
         </div>
       </div>
 
+      <div className="text-gray-600 mb-6">
+        <p className="font-bold">Doctor: {doctorId?.userName}</p>
+        <p className="text-sm text-gray-500">Email:{doctorId?.email}</p>
+        <p className="text-sm text-gray-500">
+          Specializationl:{doctorId?.specialization}
+        </p>
+      </div>
+
       <div className="text-gray-600">
+        <p>
+          <strong>Requested From:</strong> {selectedPatient.requestTo || ""}
+        </p>
         <p>
           <strong>Test:</strong> {testType}
         </p>
@@ -58,20 +71,31 @@ function PatientDetails({ selectedPatient, isLoading }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-11">
         <div
-          className="flex-1 rounded-lg overflow-hidden bg-gray-100 cursor-pointer"
+          className="flex-1 rounded-lg overflow-hidden bg-gray-100 cursor-pointer flex flex-col items-center justify-center"
           onClick={() => setShowPdfModal(true)}
         >
-          {examinationResponse?.pdfUrl?.url ? (
-            <div>
+          {radExaminationType && examinationResponse?.image?.url ? (
+            <>
+              <img
+                src={examinationResponse?.image?.url}
+                alt="X-ray"
+                className="w-full h-72 object-cover"
+              />
+              <p className="text-center text-sm text-gray-500 py-2">
+                Click to Open AI Report pdf
+              </p>
+            </>
+          ) : labExaminationType && examinationResponse?.pdfUrl?.url ? (
+            <>
               <iframe
-                src={`${examinationResponse.pdfUrl.url}#zoom=page-fit`}
-                title="Examination Report"
+                src={`${examinationResponse?.pdfUrl?.url}#zoom=page-fit`}
+                title="Lab Report"
                 className="w-full h-72"
               ></iframe>
               <p className="text-center text-sm text-gray-500 py-2">
-                Click to view full screen
+                Click to Open AI Report pdf
               </p>
-            </div>
+            </>
           ) : (
             <p className="text-center text-gray-500 p-4">
               No PDF report available
@@ -107,7 +131,7 @@ function PatientDetails({ selectedPatient, isLoading }) {
         </div>
       </div>
 
-      {showPdfModal && (
+      {showPdfModal && examinationResponse?.pdfUrl?.url && (
         <div
           className="fixed inset-0 z-50 bg-black bg-opacity-80 flex items-center justify-center"
           onClick={() => setShowPdfModal(false)}

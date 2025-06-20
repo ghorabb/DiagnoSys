@@ -1,6 +1,7 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { ArrowRight } from "lucide-react";
 import { useAddPatient } from "../../hooks/useAddPatient";
+import { HiXMark } from "react-icons/hi2";
 
 function PatientForm() {
   const {
@@ -11,17 +12,29 @@ function PatientForm() {
     formState: { errors },
   } = useForm();
 
-  const { fields: allergyFields, append: addAllergy } = useFieldArray({
+  const {
+    fields: allergyFields,
+    append: addAllergy,
+    remove: removeAllergy,
+  } = useFieldArray({
     control,
     name: "allergies",
   });
 
-  const { fields: historyFields, append: addHistory } = useFieldArray({
+  const {
+    fields: historyFields,
+    append: addHistory,
+    remove: removeHistory,
+  } = useFieldArray({
     control,
     name: "medicalHistory",
   });
 
-  const { fields: medFields, append: addMed } = useFieldArray({
+  const {
+    fields: medFields,
+    append: addMed,
+    remove: removeMed,
+  } = useFieldArray({
     control,
     name: "currentMedications",
   });
@@ -42,7 +55,9 @@ function PatientForm() {
       <div className="space-y-8">
         <div className="space-y-6">
           <div>
-            <span className="block mb-1 font-medium">Patient Name</span>
+            <span className="block mb-1 font-medium">
+              Patient Name <span className="text-red-500">*</span>
+            </span>
             <input
               {...register("patientName", {
                 required: "Patient name is required",
@@ -61,7 +76,9 @@ function PatientForm() {
           </div>
 
           <div>
-            <span className="block mb-1 font-medium">National ID</span>
+            <span className="block mb-1 font-medium">
+              National ID <span className="text-red-500">*</span>
+            </span>
             <input
               {...register("nationalId", {
                 required: "National ID is required",
@@ -83,7 +100,9 @@ function PatientForm() {
 
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <span className="block mb-1 font-medium">Phone</span>
+              <span className="block mb-1 font-medium">
+                Phone <span className="text-red-500">*</span>
+              </span>
               <input
                 {...register("phone", { required: "Phone is required" })}
                 type="tel"
@@ -97,9 +116,12 @@ function PatientForm() {
               )}
             </div>
             <div>
-              <span className="block mb-1 font-medium">Email</span>
+              <span className="block mb-1 font-medium">
+                Email <span className="text-red-500">*</span>
+              </span>
               <input
                 {...register("email", {
+                  required: "Email is required",
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                     message: "Invalid email address",
@@ -118,21 +140,30 @@ function PatientForm() {
           </div>
         </div>
 
+        {/* Address */}
         <div className="bg-[#f2f3fd] p-4 rounded-xl space-y-4">
-          <h3 className="font-semibold text-base">Current Address</h3>
+          <h3 className="font-semibold text-base">
+            Current Address <span className="text-red-500">*</span>
+          </h3>
           <div className="grid grid-cols-2 gap-4">
             <input
-              {...register("currentAddress.street")}
+              {...register("currentAddress.street", {
+                required: "street is required",
+              })}
               placeholder="Street"
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <input
-              {...register("currentAddress.city")}
+              {...register("currentAddress.city", {
+                required: "city is required",
+              })}
               placeholder="City"
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <select
-              {...register("currentAddress.governorate")}
+              {...register("currentAddress.governorate", {
+                required: "governorate is required",
+              })}
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             >
               <option value="">Select Governorate</option>
@@ -172,6 +203,7 @@ function PatientForm() {
             </select>
             <input
               {...register("currentAddress.zipCode", {
+                required: "zipCode is required",
                 pattern: {
                   value: /^\d{5}$/,
                   message: "Zip Code must be 5 digits",
@@ -183,31 +215,45 @@ function PatientForm() {
           </div>
         </div>
 
+        {/* Emergency Contact */}
         <div className="bg-[#f2f3fd] p-4 rounded-xl space-y-4">
-          <h3 className="font-semibold text-base">Emergency Contact</h3>
+          <h3 className="font-semibold text-base">
+            Emergency Contact <span className="text-red-500">*</span>
+          </h3>
           <div className="grid grid-cols-2 gap-4">
             <input
-              {...register("emergencyContact.name")}
+              {...register("emergencyContact.name", {
+                required: "name is required",
+              })}
               placeholder="Contact Name"
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <input
-              {...register("emergencyContact.phone")}
+              {...register("emergencyContact.phone", {
+                required: "phone is required",
+              })}
               placeholder="Contact Phone"
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <input
-              {...register("emergencyContact.relation")}
+              {...register("emergencyContact.relation", {
+                required: "relation is required",
+              })}
               placeholder="Relation"
               className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
           </div>
         </div>
 
+        {/* Blood Type */}
         <div>
-          <span className="block mb-1 font-medium">Blood Type</span>
+          <span className="block mb-1 font-medium">
+            Blood Type <span className="text-red-500">*</span>
+          </span>
           <select
-            {...register("bloodType")}
+            {...register("bloodType", {
+              required: "bloodType is required",
+            })}
             className="w-full p-3 border border-gray-300 rounded-xl"
           >
             <option value="">Select blood type</option>
@@ -220,15 +266,24 @@ function PatientForm() {
         </div>
       </div>
 
+      {/* Allergies */}
       <div className="space-y-2">
         <h3 className="font-semibold text-base">Allergies</h3>
         {allergyFields.map((field, index) => (
-          <input
-            key={field.id}
-            {...register(`allergies.${index}`)}
-            placeholder={`Allergy ${index + 1}`}
-            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
-          />
+          <div key={field.id} className="flex items-center gap-2">
+            <input
+              {...register(`allergies.${index}`)}
+              placeholder={`Allergy ${index + 1}`}
+              className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
+            />
+            <button
+              type="button"
+              onClick={() => removeAllergy(index)}
+              className="text-red-500 text-sm underline"
+            >
+              <HiXMark className="h-4 w-4" />
+            </button>
+          </div>
         ))}
         <button
           type="button"
@@ -238,11 +293,12 @@ function PatientForm() {
           + Add Allergy
         </button>
       </div>
-    
+
+      {/* Medical History */}
       <div className="space-y-2">
         <h3 className="font-semibold text-base">Medical History</h3>
         {historyFields.map((field, index) => (
-          <div key={field.id} className="grid grid-cols-2 gap-4">
+          <div key={field.id} className="grid grid-cols-2 gap-4 items-center">
             <input
               {...register(`medicalHistory.${index}.condition`)}
               placeholder="Condition"
@@ -268,6 +324,13 @@ function PatientForm() {
               <option value="ongoing">Ongoing</option>
               <option value="recovered">Recovered</option>
             </select>
+            <button
+              type="button"
+              onClick={() => removeHistory(index)}
+              className="text-red-500 text-sm underline col-span-2"
+            >
+              <HiXMark className="h-4 w-4" />
+            </button>
           </div>
         ))}
         <button
@@ -279,16 +342,24 @@ function PatientForm() {
         </button>
       </div>
 
-   
+      {/* Current Medications */}
       <div className="space-y-2">
         <h3 className="font-semibold text-base">Current Medications</h3>
         {medFields.map((field, index) => (
-          <input
-            key={field.id}
-            {...register(`currentMedications.${index}`)}
-            placeholder={`Medication ${index + 1}`}
-            className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
-          />
+          <div key={field.id} className="flex items-center gap-2">
+            <input
+              {...register(`currentMedications.${index}`)}
+              placeholder={`Medication ${index + 1}`}
+              className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
+            />
+            <button
+              type="button"
+              onClick={() => removeMed(index)}
+              className="text-red-500 text-sm underline"
+            >
+              <HiXMark className="h-4 w-4" />
+            </button>
+          </div>
         ))}
         <button
           type="button"
@@ -299,24 +370,55 @@ function PatientForm() {
         </button>
       </div>
 
+      {/* Insurance Details */}
       <div className="space-y-4 bg-[#f2f3fd] p-4 rounded-xl">
-        <h3 className="font-semibold text-base">Insurance Details</h3>
+        <h3 className="font-semibold text-base">
+          Insurance Details <span className="text-red-500">*</span>
+        </h3>
+
         <input
-          {...register("insuranceDetails.provider")}
+          {...register("insuranceDetails.provider", {
+            required: "Provider is required",
+          })}
           placeholder="Provider"
           className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
+
         <input
-          {...register("insuranceDetails.policyNumber")}
+          {...register("insuranceDetails.policyNumber", {
+            required: "Policy Number is required",
+          })}
           placeholder="Policy Number"
           className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
+
         <input
-          {...register("insuranceDetails.validUntil")}
+          {...register("insuranceDetails.validUntil", {
+            required: "Valid Until is required",
+            validate: (value) => {
+              const selectedDate = new Date(value);
+              const today = new Date();
+
+              if (selectedDate <= today) {
+                return "Valid Until must be a date after today";
+              }
+
+              return true;
+            },
+          })}
           type="date"
           className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
+
+        {/* Error message below the date field */}
+        {errors?.insuranceDetails?.validUntil && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.insuranceDetails.validUntil.message}
+          </p>
+        )}
       </div>
+
+      {/* Submit */}
       <div className="flex justify-end">
         <button
           type="submit"
