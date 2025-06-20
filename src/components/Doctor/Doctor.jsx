@@ -4,11 +4,11 @@ import CustomCalendar from "../../ui/CustomCalendar";
 import Appointment from "./Appointment";
 import PatientDetailsForm from "./PatientDetailsForm";
 import TestResults from "./TestResults";
-import { useGetAppToDoctor } from "../../hooks/useGetAppToDoctor"; // your custom hook
+import { useGetAppToDoctor } from "../../hooks/useGetAppToDoctor";
 import { useGetAppointmentById } from "../../hooks/useGetAppointmentById";
 import PatientDetails from "./PatientDetails";
 import { useGetExaminationById } from "../../hooks/useGetExaminationById";
-import { useGetExaminations } from "../../hooks/usegetExaminations";
+import { useGetExaminations } from "../../hooks/useGetExaminations";
 
 function Doctor() {
   const { selectedDate } = useCalendar();
