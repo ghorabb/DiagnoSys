@@ -95,12 +95,12 @@ function EditForm({ id }) {
       <input
         {...register("phone", { required: "Phone is required" })}
         placeholder="Phone"
-        className="p-3 border border-gray-300 rounded-xl w-full"
+        className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
       />
       <input
         {...register("email")}
         placeholder="Email"
-        className="p-3 border border-gray-300 rounded-xl w-full"
+        className="p-3 border border-gray-300 rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
       />
 
       <div className="bg-[#f2f3fd] p-4 rounded-xl space-y-4">
@@ -109,22 +109,22 @@ function EditForm({ id }) {
           <input
             {...register("currentAddress.street")}
             placeholder="Street"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
           <input
             {...register("currentAddress.city")}
             placeholder="City"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
           <input
             {...register("currentAddress.governorate")}
             placeholder="Governorate"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
           <input
             {...register("currentAddress.zipCode")}
             placeholder="Zip Code"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
         </div>
       </div>
@@ -135,17 +135,17 @@ function EditForm({ id }) {
           <input
             {...register("emergencyContact.name")}
             placeholder="Name"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
           <input
             {...register("emergencyContact.phone")}
             placeholder="Phone"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
           <input
             {...register("emergencyContact.relation")}
             placeholder="Relation"
-            className="p-3 border rounded-xl"
+            className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
         </div>
       </div>
@@ -157,7 +157,7 @@ function EditForm({ id }) {
             key={field.id}
             {...register(`allergies.${index}`)}
             placeholder={`Allergy ${index + 1}`}
-            className="w-full p-3 border rounded-xl"
+            className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
         ))}
         <button
@@ -176,17 +176,17 @@ function EditForm({ id }) {
             <input
               {...register(`medicalHistory.${index}.condition`)}
               placeholder="Condition"
-              className="p-3 border rounded-xl"
+              className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <input
               {...register(`medicalHistory.${index}.diagnosisDate`)}
               type="date"
-              className="p-3 border rounded-xl"
+              className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <input
               {...register(`medicalHistory.${index}.treatment`)}
               placeholder="Treatment"
-              className="p-3 border rounded-xl"
+              className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
             />
             <select
               {...register(`medicalHistory.${index}.status`)}
@@ -214,7 +214,7 @@ function EditForm({ id }) {
             key={field.id}
             {...register(`currentMedications.${index}`)}
             placeholder={`Medication ${index + 1}`}
-            className="w-full p-3 border rounded-xl"
+            className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-customBlue"
           />
         ))}
         <button
@@ -231,17 +231,17 @@ function EditForm({ id }) {
         <input
           {...register("insuranceDetails.provider")}
           placeholder="Provider"
-          className="p-3 border rounded-xl w-full"
+          className="p-3 border rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
         <input
           {...register("insuranceDetails.policyNumber")}
           placeholder="Policy Number"
-          className="p-3 border rounded-xl w-full"
+          className="p-3 border rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
         <input
           {...register("insuranceDetails.validUntil")}
           type="date"
-          className="p-3 border rounded-xl w-full"
+          className="p-3 border rounded-xl w-full focus:outline-none focus:ring-2 focus:ring-customBlue"
         />
       </div>
 
