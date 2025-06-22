@@ -19,7 +19,7 @@ function PatientDetails({
 }) {
   const { register, handleSubmit, reset, control } = useForm({
     defaultValues: {
-      findings: [],
+      findings: [{ value: "" }],
     },
   });
 
