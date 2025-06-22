@@ -32,8 +32,17 @@ function PatientDetails({
     if (data.responseNotes)
       formData.append("responseNotes", data.responseNotes);
     if (data.impression) formData.append("impression", data.impression);
+    // Get findings array
+    let findings = data.findings
+      .map((f) => f.value)
+      .filter((f) => f.trim() !== "");
 
-    const findings = data.findings.map((f) => f.value).filter(Boolean);
+    // If there's only one finding, duplicate it
+    if (findings.length === 1) {
+      findings.push(findings[0]);
+    }
+
+    // Append findings
     findings.forEach((f) => formData.append("findings", f));
 
     if (data.file?.[0]) formData.append("pdf", data.file[0]);

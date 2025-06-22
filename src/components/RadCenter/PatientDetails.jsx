@@ -81,37 +81,49 @@ function PatientDetails({
     });
   }
 
-  function onSubmit(data) {
-    if (!selectedPatient) return;
+function onSubmit(data) {
+  if (!selectedPatient) return;
 
-    const formData = new FormData();
-    formData.append("bodyPart", data.bodyPart);
-    formData.append("responseNotes", data.responseNotes);
-    formData.append("impression", data.impression);
+  const formData = new FormData();
+  formData.append("bodyPart", data.bodyPart);
+  formData.append("responseNotes", data.responseNotes);
+  formData.append("impression", data.impression);
 
-    const findings = data.findings.map((f) => f.value);
-    findings.forEach((f) => formData.append("findings", f));
+  let findings = data.findings
+    .map((f) => f.value)
+    .filter((f) => f.trim() !== "");
 
-    if (pdfBlob) {
-      formData.append(
-        "pdf",
-        new File([pdfBlob], "report.pdf", { type: "application/pdf" })
-      );
-    }
-
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-
-    handleStatusUpdate(formData, () => {
-      reset({ findings: [{ value: "" }] });
-      setImageFile(null);
-      setImageFileName("");
-      setPdfBlob(null);
-      setPdfUrl(null);
-      if (onClose) onClose();
-    });
+  // If there's only one finding, duplicate it
+  if (findings.length === 1) {
+    findings.push(findings[0]);
   }
+
+  // Append findings
+  findings.forEach((f) => formData.append("findings", f));
+
+  // Append optional PDF and image if available
+  if (pdfBlob) {
+    formData.append(
+      "pdf",
+      new File([pdfBlob], "report.pdf", { type: "application/pdf" })
+    );
+  }
+
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
+
+  // Send to backend
+  handleStatusUpdate(formData, () => {
+    reset({ findings: [{ value: "" }] });
+    setImageFile(null);
+    setImageFileName("");
+    setPdfBlob(null);
+    setPdfUrl(null);
+    if (onClose) onClose();
+  });
+}
+
 
   if (isLoading)
     return <p className="text-center text-gray-500">Loading details...</p>;
