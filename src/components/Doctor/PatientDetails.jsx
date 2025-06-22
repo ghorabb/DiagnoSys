@@ -44,22 +44,22 @@ function PatientDetails({ selectedPatient, isLoading }) {
         </div>
 
         <div>
-          <p className="text-sm text-gray-600">Gender: {patientId?.gender}</p>
-          <p className="text-sm text-gray-600">Phone: {patientId?.phone}</p>
+          <p className="text-sm text-gray-500">Gender: {patientId?.gender}</p>
+          <p className="text-sm text-gray-500">Phone: {patientId?.phone}</p>
         </div>
       </div>
 
       <div className="text-gray-600 mb-6">
         <p className="font-bold">Doctor: {doctorId?.userName}</p>
-        <p className="text-sm text-gray-500">Email:{doctorId?.email}</p>
+        <p className="text-sm text-gray-500">Email: {doctorId?.email}</p>
         <p className="text-sm text-gray-500">
-          Specializationl:{doctorId?.specialization}
+          Specializationl: {doctorId?.specialization}
         </p>
       </div>
 
       <div className="text-gray-600">
         <p>
-          <strong>Requested From:</strong> {selectedPatient.requestTo || ""}
+          <strong>From:</strong> {selectedPatient.requestTo || ""}
         </p>
         <p>
           <strong>Test:</strong> {testType}

@@ -39,10 +39,10 @@ function Appointment() {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative">
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
           <h2 className="text-lg font-semibold whitespace-nowrap">
-            Appointments on {selectedDate.format("MMMM D, YYYY")}
+            {selectedDate.format("MMMM D, YYYY")}
           </h2>
 
           <div className="relative">

@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { FaUpload } from "react-icons/fa";
 import { HiArrowRight } from "react-icons/hi";
 import { MdAutoAwesome } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import TextInput from "../../ui/TextInput";
@@ -16,12 +17,21 @@ function PatientDetails({
   handleStatusUpdate,
   onClose,
 }) {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control } = useForm({
+    defaultValues: {
+      findings: [],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "findings",
+  });
+
   const [imageFile, setImageFile] = useState(null);
   const [imageFileName, setImageFileName] = useState("");
   const [pdfBlob, setPdfBlob] = useState(null);
   const [pdfUrl, setPdfUrl] = useState(null);
-  const [visibleFindings, setVisibleFindings] = useState(1);
 
   function camelCaseToSnakeCase(str) {
     return str.replace(/([a-z0-9])([A-Z])/g, "$1_$2").toLowerCase();
@@ -79,7 +89,7 @@ function PatientDetails({
     formData.append("responseNotes", data.responseNotes);
     formData.append("impression", data.impression);
 
-    const findings = [data.finding1, data.finding2, data.finding3];
+    const findings = data.findings.map((f) => f.value);
     findings.forEach((f) => formData.append("findings", f));
 
     if (pdfBlob) {
@@ -94,7 +104,7 @@ function PatientDetails({
     }
 
     handleStatusUpdate(formData, () => {
-      reset();
+      reset({ findings: [{ value: "" }] });
       setImageFile(null);
       setImageFileName("");
       setPdfBlob(null);
@@ -203,56 +213,57 @@ function PatientDetails({
             }
             {...register("responseNotes", { required: true })}
           />
+        </div>
+
+        <div className="mb-4">
           <TextInput
             label={
               <span>
-                Finding 1 <span className="text-red-500">*</span>
+                Impression <span className="text-red-500">*</span>
               </span>
             }
-            {...register("finding1", { required: true })}
+            {...register("impression", { required: true })}
           />
-
-          {visibleFindings >= 2 && (
-            <TextInput
-              label={
-                <span>
-                  Finding 2 <span className="text-red-500">*</span>
-                </span>
-              }
-              {...register("finding2", { required: true })}
-            />
-          )}
-
-          {visibleFindings >= 3 && (
-            <TextInput
-              label={
-                <span>
-                  Finding 3 <span className="text-red-500">*</span>
-                </span>
-              }
-              {...register("finding3", { required: true })}
-            />
-          )}
         </div>
 
-        {visibleFindings < 3 && (
-          <button
-            type="button"
-            className="text-blue-600 text-sm underline mb-4"
-            onClick={() => setVisibleFindings((prev) => prev + 1)}
-          >
-            + Add more findings
-          </button>
-        )}
+        {/* Dynamic Findings */}
+        <div className="mb-6">
+          <div className="space-y-3">
+            {fields.map((field, index) => (
+              <div key={field.id} className="flex gap-2 items-start">
+                <TextInput
+                  label={
+                    <span>
+                      Findings <span className="text-red-500">*</span>
+                    </span>
+                  }
+                  {...register(`findings.${index}.value`, { required: true })}
+                  className="w-full"
+                />
+                {index > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="mt-8 text-red-500 hover:text-red-700"
+                    title="Remove"
+                  >
+                    <IoClose className="text-xl" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
 
-        <TextInput
-          label={
-            <span>
-              Impression <span className="text-red-500">*</span>
-            </span>
-          }
-          {...register("impression", { required: true })}
-        />
+          {fields.length < 5 && (
+            <button
+              type="button"
+              onClick={() => append({ value: "" })}
+              className="mt-2 text-blue-600 text-sm underline"
+            >
+              + Add more findings
+            </button>
+          )}
+        </div>
 
         <button
           type="submit"

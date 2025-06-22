@@ -1,6 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { FaUpload } from "react-icons/fa";
 import { HiArrowRight } from "react-icons/hi";
+import { FiX } from "react-icons/fi";
 import TextInput from "../../ui/TextInput";
 import { useState } from "react";
 
@@ -12,8 +13,16 @@ function PatientDetails({
   onClose,
 }) {
   const [fileName, setFileName] = useState("");
-  const [visibleFindings, setVisibleFindings] = useState(1);
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, control, reset } = useForm({
+    defaultValues: {
+      findings: [],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "findings",
+  });
 
   function onSubmit(data) {
     if (!selectedPatient) return;
@@ -24,16 +33,14 @@ function PatientDetails({
       formData.append("responseNotes", data.responseNotes);
     if (data.impression) formData.append("impression", data.impression);
 
-    const findings = [data.finding1, data.finding2, data.finding3];
+    const findings = data.findings.map((f) => f.value).filter(Boolean);
     findings.forEach((f) => formData.append("findings", f));
-    
 
     if (data.file?.[0]) formData.append("pdf", data.file[0]);
 
     handleStatusUpdate(formData, () => {
-      reset();
+      reset({ findings: [] });
       setFileName("");
-      setVisibleFindings(1);
       if (onClose) onClose();
     });
   }
@@ -83,6 +90,7 @@ function PatientDetails({
           <h3 className="font-semibold mb-2">Submit Lab Report</h3>
 
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Upload Box */}
             <div className="p-[54px] mb-4 border-none border-2 rounded-lg flex flex-col items-center bg-[#f2f3fd]">
               <FaUpload className="text-gray-500 text-3xl mb-2" />
               <p className="text-gray-500">
@@ -108,6 +116,7 @@ function PatientDetails({
               )}
             </div>
 
+            {/* Text Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <TextInput
                 label={
@@ -123,27 +132,43 @@ function PatientDetails({
                 {...register("responseNotes")}
               />
               <TextInput label="Impression" {...register("impression")} />
-
-              <TextInput label="Finding 1" {...register("finding1")} />
-
-              {visibleFindings >= 2 && (
-                <TextInput label="Finding 2" {...register("finding2")} />
-              )}
-              {visibleFindings >= 3 && (
-                <TextInput label="Finding 3" {...register("finding3")} />
-              )}
             </div>
 
-            {visibleFindings < 3 && (
+            {/* Findings Section */}
+            <div className="mt-4">
+              {fields.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {fields.map((field, index) => (
+                    <div key={field.id} className="flex items-center gap-2">
+                      <div className="flex-1">
+                        <TextInput
+                          label={<span>Findings</span>}
+                          {...register(`findings.${index}.value`)}
+                          className="w-full"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => remove(index)}
+                        className="text-gray-500 hover:text-red-600 mt-6"
+                        title="Remove"
+                      >
+                        <FiX className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
               <button
                 type="button"
-                onClick={() => setVisibleFindings((prev) => prev + 1)}
+                onClick={() => append({ value: "" })}
                 className="text-sm text-blue-600 underline mt-2"
               >
                 + Add more findings
               </button>
-            )}
+            </div>
 
+            {/* Submit */}
             <div className="flex items-center mt-5 gap-2">
               <button
                 type="submit"
