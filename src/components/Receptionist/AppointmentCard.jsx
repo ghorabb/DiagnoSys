@@ -17,16 +17,18 @@ function AppointmentCard({ appt }) {
   };
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm bg-gray-100">
-      <h3 className="text-md font-semibold flex gap-1 items-center">
+    <div className="p-4 border rounded-lg shadow-sm bg-gray-100 w-full min-w-[340px]">
+      <h3 className="text-md font-semibold flex items-center gap-2 whitespace-nowrap">
         <img
           alt=""
           src={appt.doctor?.profileImage?.url}
           className="w-8 h-8 rounded-full object-cover"
         />
-        Dr. {appt.doctor?.userName}{" "}
-        <span className="text-base text-gray-600 font-normal">
-          ({appt.doctor?.specialization})
+        <span>
+          Dr. {appt.doctor?.userName}{" "}
+          <span className="text-base text-gray-600 font-normal">
+            ({appt.doctor?.specialization})
+          </span>
         </span>
       </h3>
 
@@ -69,3 +71,5 @@ function AppointmentCard({ appt }) {
 }
 
 export default AppointmentCard;
+
+

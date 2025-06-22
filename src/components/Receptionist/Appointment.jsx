@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa";
+import { FaFilter, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import AddAppointment from "./AddAppointment";
 import { useCalendar } from "../../context/CalendarContext";
 import { useGetAppointments } from "../../hooks/useGetAppointments";
@@ -89,18 +89,12 @@ function Appointment() {
       ) : filteredAppointments.length === 0 ? (
         <p className="text-gray-500">No appointments for this day.</p>
       ) : (
-        <div className="relative">
-          <div
-            className="flex gap-4 overflow-x-scroll scroll-smooth no-scrollbar"
-            ref={scrollRef}
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {filteredAppointments.map((appointment, index) => (
-              <div key={index} className="flex-shrink-0 w-72 md:w-80">
-                <AppointmentCard appt={appointment} />
-              </div>
-            ))}
-          </div>
+        <div ref={scrollRef} className="flex gap-4 px-2 overflow-hidden">
+          {filteredAppointments.map((appointment, index) => (
+            <div key={index} className="flex-shrink-0">
+              <AppointmentCard appt={appointment} />
+            </div>
+          ))}
         </div>
       )}
 
