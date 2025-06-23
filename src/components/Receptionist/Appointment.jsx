@@ -35,7 +35,19 @@ function Appointment() {
     )
     .filter((appt) =>
       statusFilter === "All" ? true : appt.status === statusFilter
-    );
+    )
+    .sort((a, b) => {
+      // Combine appointmentDate and startTime to compare as full datetime
+      const aDateTime = dayjs(
+        `${a.appointmentDate} ${a.startTime}`,
+        "MM/DD/YYYY hh:mm A"
+      );
+      const bDateTime = dayjs(
+        `${b.appointmentDate} ${b.startTime}`,
+        "MM/DD/YYYY hh:mm A"
+      );
+      return aDateTime - bDateTime;
+    });
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md relative">
